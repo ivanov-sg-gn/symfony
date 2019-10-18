@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}
+            <link rel="stylesheet" href="/asset/css/style.css">
+        {% endblock %}
+    </head>
+    <body>
+        <div class="wrapper">
+
+            <div class="header">
+                {% block header %}{% endblock %}
+            </div>
+
+            <div class="menu_left">
+                {% block menu_left %}{% endblock %}
+            </div>
+
+            {% block breadcrumbs %}{% endblock %}
+
+            {% block body %}
+            {% endblock %}
+
+            {% block javascripts %}{% endblock %}
+        </div>
+    </body>
+</html>

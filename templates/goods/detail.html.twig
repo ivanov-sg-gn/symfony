@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Детальная страница{% endblock %}
+
+{% block body %}
+    <div class="example-wrapper">
+        <h1>Детальная страница</h1>
+
+        <div class="main goods_detail">
+            <div>{{ goods.id }}</div>
+            <div>{{ goods.code }}</div>
+            <div>{{ goods.name }}</div>
+            <div>{{ goods.description }}</div>
+        </div>
+    </div>
+{% endblock %}

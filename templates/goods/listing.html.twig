@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Товары{% endblock %}
+
+{% block header %}
+    <h1>Товары</h1>
+
+    {% if arSections is not empty %}
+        <h2>Категория: {{ arSections|last.name }}</h2>
+    {% endif %}
+{% endblock %}
+
+
+{% block breadcrumbs %}
+    {% if arSections is not empty %}
+
+        <div class="breadcrumbs">
+            <div class="breadcrumbs__title">Навигация</div>
+            <ul class="breadcrumbs__body">
+                {% for item in arSections %}
+                <li class="breadcrumbs__item"><a href="{{ path('goods_routing', {particles: arBreadCrams[item.id]} ) }}">{{ item.name }}</a>
+                    {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <div class="main goods">
+        {% for goods in arGoods %}
+        <div class="goods__item">
+            <div class="goods__body">
+                <div class="goods__item-title">{{ goods.name }}</div>
+                <div class="goods__item-img"></div>
+                <div class="goods__item-description">{{ goods.description }}</div>
+                <div class="goods__item-tools">
+                    <button type="submit">В корзину</button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        {% if arGoods is empty %}
+            <div class="goods__title">
+                Данный раздел пуст
+            </div>
+        {% endif %}
+    </div>
+
+
+    {{ include('pagination.html.twig', {count: arPagination.count, page: arPagination.page, scale: arPagination.scale, route: 'goods_routing', addParams: {particles: app.request.attributes.get('particles')} }) }}
+
+{% endblock %}

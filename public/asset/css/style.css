@@ -1,0 +1,89 @@
+@import "./normalize.css" screen;
+
+
+.wrapper h1 {
+    text-align: center;
+}
+
+
+
+.header {
+    width: 70%;
+    margin: 10px auto 0;
+}
+
+
+
+
+.breadcrumbs {
+    width: 70%;
+    margin: 10px auto 0;
+
+}
+.breadcrumbs__body {
+    padding: 0;
+}
+.breadcrumbs__title {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+.breadcrumbs__item {
+    display: inline-block;
+    list-style: none;
+}
+.breadcrumbs__item::after{
+    content: '/';
+    display: inline-block;
+    margin: 0 5px;
+}
+.breadcrumbs__item:last-child::after{
+    display: none;
+}
+
+
+.main {
+    width: 70%;
+    margin: 20px auto 0;
+}
+
+
+.goods {
+    font-size: 0;
+}
+
+.goods__item {
+    width: 25%;
+    display: inline-block;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: initial;
+}
+
+.goods__body {
+    border: 1px solid #EEEEEE;
+    padding: 10px;
+}
+
+
+
+
+
+.pagination {
+    width: 70%;
+    margin: 10px auto 0;
+}
+.pagination__body {
+     padding: 0;
+ }
+.pagination__item {
+    display: inline-block;
+    list-style: none;
+}
+.pagination__item::after{
+     content: '|';
+     display: inline-block;
+     margin: 0 5px;
+ }
+.pagination__item:last-child::after{
+    display: none;
+}

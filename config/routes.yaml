@@ -1,0 +1,14 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+
+
+#goods:
+#  path: /goods
+#  controller: App\Controller\GoodsController::routing
+
+goods_routing:
+  path: /goods/{particles?}
+  controller: App\Controller\GoodsController::routing
+  requirements:
+    particles: '(.*)+'

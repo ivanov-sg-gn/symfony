@@ -1,0 +1,17 @@
+<div class="pagination">
+    {% set additional_params = {} %}
+    {% if addParams is defined %}
+        {% set additional_params = additional_params|merge(addParams?:[]) %}
+    {% endif %}
+
+    {% if count is not empty and page is not empty and scale is not empty and route is not empty %}
+        <ul class="pagination__body">
+            {% for i in 1..(count-1) %}
+                {% set params = {'page' : i} %}
+                {% set params = params|merge(additional_params) %}
+
+                <li class="pagination__item {{  i == page ? 'active' : '' }} "><a href="{{ path(route, params) }}">{{ i }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
