@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Goods;
 
+use App\Entity\Images;
 use App\Entity\Sections;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,6 +13,7 @@ use Symfony\Component\Stopwatch\Section;
 
 
 class GoodsController extends AbstractController {
+
     # Параметры url
     public $params = [];
     public $goods_code = '';
@@ -20,7 +22,8 @@ class GoodsController extends AbstractController {
         'page' => 1,
         'scale' => 0,
     ];
-    public $counInPage = 1;
+    public $counInPage = 10;
+
 
     public function routing ( string $particles = null, Request $request ) {
 
@@ -47,10 +50,12 @@ class GoodsController extends AbstractController {
         }
     }
 
+
     public function listing ( Request $request ) {
         $arGoods = [];
         $arFilter = [];
 
+        # Проверяем и вытаскиваем секции
         $arSectionsInfo = $this->get_sections();
         if(!empty($arSectionsInfo)){
             $lastSection = end($arSectionsInfo);
@@ -58,36 +63,69 @@ class GoodsController extends AbstractController {
             $arFilter['section'] = intval($lastSection->getId());
         }
 
+        # Левое меню
+        $em = $this->getDoctrine()->getManager()->getRepository(Sections::class);
+        $arSections = $em->findAll();
 
+        # формирование ссылок для хлебных крошек
         $arBreadCrams = SectionController::createLinks($arSectionsInfo);
 
+        # Получение товаров
         $em = $this->getDoctrine()->getManager()->getRepository( Goods::class );
         $arGoods = $em->findBy(
             $arFilter,
-            [ 'name' => 'asc' ],
+            [ 'sort' => 'asc' ],
             $this->counInPage,
-            $request->get('page', 1) * $this->counInPage
+            ($request->get('page', 1) - 1)  * $this->counInPage
         );
         $count = $em->count($arFilter);
+
+        # Получение фотографий
+        $arImages = $arImagesFilter = [];
+        foreach ($arGoods as $item){
+            $arImagesFilter['id'][$item->getImg()] = $item->getImg();
+        }
+
+        if(!empty($arImagesFilter)){
+            $arImages = $this->getDoctrine()->getManager()->getRepository( Images::class )->findBy_array($arImagesFilter);
+        }
+
 
         $this->pagination['count'] = ceil($count / $this->counInPage);
         $this->pagination['page'] = $request->get('page', 1);
 
         return $this->render( 'goods/listing.html.twig', [
-            'controller_name' => 'GoodsController',
-            'arGoods'         => $arGoods,
-            'arSections'      => $arSectionsInfo,
-            'arBreadCrams'    => $arBreadCrams,
-            'arPagination'    => $this->pagination,
+            'controller_name'   => 'GoodsController',
+            'arGoods'           => $arGoods,
+            'arImages'          => $arImages,
+            'arSections'        => $arSections,
+            'arSectionsInfo'    => $arSectionsInfo,
+            'arBreadCrams'      => $arBreadCrams,
+            'arPagination'      => $this->pagination,
         ] );
     }
 
+
+
     public function detail ( Goods $goods ) {
+
+        # Левое меню
+        $em = $this->getDoctrine()->getManager()->getRepository(Sections::class);
+        $arSections = $em->findAll();
+
+
+        # Получение фотографий
+        $arImages = $this->getDoctrine()->getManager()->getRepository( Images::class )->findBy_array(['id' => $goods->getImg()]);
+
+
         return $this->render( 'goods/detail.html.twig', [
             'controller_name' => 'GoodsController',
             'goods'           => $goods,
+            'arImages'          => $arImages,
+            'arSections'        => $arSections,
         ] );
     }
+
 
     # Получение секций
     public function get_sections () {
@@ -100,4 +138,5 @@ class GoodsController extends AbstractController {
         
         return $arRes;
     }
+
 }

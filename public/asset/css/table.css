@@ -1,0 +1,23 @@
+table{
+    border-collapse: collapse;
+}
+thead{
+    border-bottom:1px solid #ccc
+}
+tfoot{
+    border-top:1px solid #ccc
+}
+th {
+    border-bottom: 3px solid #B9B29F;
+    padding: 10px;
+    text-align: left;
+}
+td {
+    padding: 10px;
+}
+tr:nth-child(odd) {
+    background: #ffffff;
+}
+tr:nth-child(even) {
+    background: #FFF8E1;
+}

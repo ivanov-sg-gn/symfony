@@ -1,0 +1,26 @@
+@media all and (max-width: 1280px) {
+    .main{
+        width:85%;
+    }
+
+    .b_add_basket,
+    .goods_count{
+        width:100%;
+        display: block;
+        font-size: 14px;
+    }
+
+    .goods__item{
+        font-size: 14px;
+    }
+}
+
+@media all and (max-width: 1024px) {
+    .goods__item{
+        width:25%;
+    }
+
+    .form_create_order{
+        width: 100%;
+    }
+}

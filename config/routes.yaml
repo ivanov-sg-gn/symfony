@@ -7,8 +7,90 @@
 #  path: /goods
 #  controller: App\Controller\GoodsController::routing
 
+
+
+app_login:
+  path: /login
+  controller: App\Controller\SecurityController::login
+
+app_json_login:
+  path: /json-login
+  controller: App\Controller\JsonAuthController::login
+  methods: POST
+
+app_logout:
+  path: /logout
+  methods: GET
+
+app_register:
+  path: /register
+  controller: App\Controller\RegistrationController::register
+
+
+
+
+api:
+  path: /api/{particles?}
+  controller: App\Controller\ApiController::index
+  requirements:
+    particles: '(.*)'
+  methods: GET|PUT|POST|DELETE
+
+
+
+
+
+
+account:
+  path: /account
+  controller: App\Controller\AccountController::index
+
+account_orders:
+  path: /account/orders
+  controller: App\Controller\AccountOrdersController::index
+
+account_orders_detail:
+  path: /account/orders/{id}
+  controller: App\Controller\AccountOrdersController::detail
+  requirements:
+    particles: '/d+'
+
+
+
+admin:
+  path: /admin
+  controller: App\Controller\AdminController::index
+
+remove_goods:
+  path: /admin/remove/{goods}
+  controller: App\Controller\AdminController::removeGoods
+  requirements:
+    particles: '/d+'
+
+
+index:
+  path: /
+  controller: App\Controller\IndexController::index
+
+basket:
+  path: /basket
+  controller: App\Controller\BasketController::index
+
+basket_success:
+  path: /basket/success/{number}
+  controller: App\Controller\BasketController::success
+
+
 goods_routing:
-  path: /goods/{particles?}
+  path: /{_locale?}/goods/{particles?}
   controller: App\Controller\GoodsController::routing
+  requirements:
+    particles: '(.*)+'
+    _locale: ru|en
+
+
+section:
+  path: /section/{code?}
+  controller: App\Controller\SectionController::index
   requirements:
     particles: '(.*)+'

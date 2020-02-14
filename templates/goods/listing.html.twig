@@ -2,39 +2,53 @@
 
 {% block title %}Товары{% endblock %}
 
-{% block header %}
-    <h1>Товары</h1>
-
-    {% if arSections is not empty %}
-        <h2>Категория: {{ arSections|last.name }}</h2>
-    {% endif %}
-{% endblock %}
-
 
 {% block breadcrumbs %}
-    {% if arSections is not empty %}
-
+    {% if arSectionsInfo|length > 1 %}
         <div class="breadcrumbs">
-            <div class="breadcrumbs__title">Навигация</div>
             <ul class="breadcrumbs__body">
-                {% for item in arSections %}
-                <li class="breadcrumbs__item"><a href="{{ path('goods_routing', {particles: arBreadCrams[item.id]} ) }}">{{ item.name }}</a>
-                    {% endfor %}
+                {% for item in arSectionsInfo %}
+                    <li class="breadcrumbs__item"><a href="{{ path('goods_routing', {particles: arBreadCrams[item.id]} ) }}">{{ item.name }}</a>
+                {% endfor %}
             </ul>
         </div>
     {% endif %}
 {% endblock %}
 
+
+{% block menu_left %}
+    {{ include('section/menu_left.html.twig',{route: 'section', arSections: arSections}) }}
+{% endblock %}
+
+
 {% block body %}
     <div class="main goods">
+        {% if arSectionsInfo is not empty %}
+            <div class="content_title">{{ arSectionsInfo|last.name }}</div>
+        {% else %}
+            <div class="content_title">Каталог</div>
+        {% endif %}
+
+        
         {% for goods in arGoods %}
         <div class="goods__item">
             <div class="goods__body">
-                <div class="goods__item-title">{{ goods.name }}</div>
-                <div class="goods__item-img"></div>
+                <a href="{{ path('goods_routing', {particles: goods.code}) }}/">
+                    <div class="goods__item-title">{{ goods.name }}</div>
+                    <div class="goods__item-img">
+                        <img src="{% if goods.img in arImages|keys and arImages[goods.img].type != 'url' %}{{ asset('/uploads/goods/' ~ arImages[goods.img].path) }}{% else %}https://www.prolo.ru/wa-data/public/shop/products/80/22/2280/images/2869/2869.970.jpg{% endif %}">
+                    </div>
+                </a>
+
                 <div class="goods__item-description">{{ goods.description }}</div>
+                <div class="goods__item-price">Цена: {{ goods.price }} руб</div>
+
                 <div class="goods__item-tools">
-                    <button type="submit">В корзину</button>
+                    <input type="hidden" name="goods_id" value="{{ goods.id }}">
+                    <input type="text" name="goods_count" value="1" class="goods_count">
+                    <input type="hidden" name="token" value="{{ csrf_token('goods-add') }}"/>
+
+                    <button type="submit" class="js_add_basket b_add_basket">В корзину</button>
                 </div>
             </div>
         </div>
@@ -42,12 +56,21 @@
 
         {% if arGoods is empty %}
             <div class="goods__title">
-                Данный раздел пуст
+                Товары по данному запросу отсутствуют
             </div>
         {% endif %}
     </div>
 
 
-    {{ include('pagination.html.twig', {count: arPagination.count, page: arPagination.page, scale: arPagination.scale, route: 'goods_routing', addParams: {particles: app.request.attributes.get('particles')} }) }}
+    {% if arGoods is not empty %}
+        {{ include('pagination.html.twig', {
+            count: arPagination.count,
+            page: arPagination.page,
+            route: 'goods_routing',
+            addParams: {
+                particles: app.request.attributes.get('particles')
+            }
+        }) }}
+    {% endif %}
 
 {% endblock %}

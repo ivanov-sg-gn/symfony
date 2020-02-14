@@ -4,27 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Sections;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class SectionController extends AbstractController {
-    /**
-     * @Route("/section", name="section")
-     */
-    public function index () {
+
+    public function index ( string $code = null, Request $request ) {
         return $this->render( 'section/index.html.twig', [
             'controller_name' => 'SectionController',
-        ] );
-    }
-
-
-
-    public function create_menu_left(){
-        $em = $this->getDoctrine()->getRepository(Sections::class);
-        $arSections = $em->findAll();
-
-        return $this->render( 'section/menu_left.html.twig', [
-            'controller_name' => 'SectionController',
-            'arSections' => $arSections,
         ] );
     }
 

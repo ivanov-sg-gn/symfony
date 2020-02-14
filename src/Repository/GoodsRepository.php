@@ -20,10 +20,31 @@ class GoodsRepository extends ServiceEntityRepository
     }
 
 
-    public function getCount(array $filter=[]){
+    // Получение по массиву
+    public function findByArray(array $filter = [], string $key='id'){
+
+        $db = $this->createQueryBuilder('w', 'w.' . $key);
+
+        $rq = null;
+
+        foreach ($filter as $key => $value){
+            if(is_array($value))
+                if(!empty($rq))
+                    $rq = $db->andWhere("w.$key IN (:$key)")->setParameter($key, $value);
+                else $rq = $db->where("w.$key IN (:$key)")->setParameter($key, $value);
+            elseif(is_integer($value) || is_string($value))
+                if(!empty($rq))
+                    $rq = $db->andWhere("w.$key = :$key")->setParameter($key, $value);
+                else $rq = $db->where("w.$key = :$key")->setParameter($key, $value);
+            elseif(is_bool($value))
+                if(!empty($rq))
+                    $rq = $db->andWhere("w.$key = :$key")->setParameter($key, boolval($value));
+                else  $rq = $db->where("w.$key = :$key")->setParameter($key, boolval($value));
+        }
+
+        return $rq->getQuery()->getArrayResult();
 
     }
-
 
     // /**
     //  * @return Goods[] Returns an array of Goods objects

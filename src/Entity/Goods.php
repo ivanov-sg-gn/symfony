@@ -55,6 +55,16 @@ class Goods
      */
     private $code;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $img;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $price;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -140,6 +150,30 @@ class Goods
     public function setCode(?string $code): self
     {
         $this->code = $code;
+
+        return $this;
+    }
+
+    public function getImg(): ?int
+    {
+        return $this->img;
+    }
+
+    public function setImg(?int $img): self
+    {
+        $this->img = $img;
+
+        return $this;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?float $price): self
+    {
+        $this->price = $price;
 
         return $this;
     }

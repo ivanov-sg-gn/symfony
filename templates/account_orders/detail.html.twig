@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Заказ №{% endblock %}
+
+{% block body %}
+
+    <div class="main orders container">
+        <div class="content_title">Информация о заказе №{{ id }}</div>
+
+        <table class="orders_table">
+            <thead>
+            <tr>
+                <td>№</td>
+                <td>Имя</td>
+                <td>Фамилия</td>
+                <td>Отчество</td>
+                <td>Email</td>
+                <td>Телефон</td>
+                <td>Адрес</td>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for item in arOrder.arResult %}
+                <tr>
+                    <td><a href="{{ path('account_orders_detail', {id: item.id}) }}">{{ item.id }}</a></td>
+                    <td>{{ item.first_name }}</td>
+                    <td>{{ item.last_name }}</td>
+                    <td>{{ item.second_name }}</td>
+                    <td>{{ item.email }}</td>
+                    <td>{{ item.phone }}</td>
+                    <td>{{ item.address }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+
+
+
+
+        <div class="content_title">Содержание заказа</div>
+
+        <table class="basket_table">
+            <thead>
+            <tr>
+                <td>№</td>
+                <td>Название товара</td>
+                <td>Количество</td>
+                <td>Цена</td>
+                <td>Итог</td>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% set cost = 0 %}
+            {% set count = 0 %}
+
+            {% for item in arOrderLines %}
+
+                <tr>
+                    <td>{{ item.goods_id }}</td>
+
+                    {% if item.goods_id in arGoods|keys %}
+                        <td><a href="{{ path('goods_routing', {'particles': arGoods[item.goods_id].code}) }}">{{ arGoods[item.goods_id].name }}</a></td>
+                    {% else %}
+                        <td>Товар не существует более</td>
+                    {% endif %}
+
+                    <td>{{ item.goods_qnt }} шт</td>
+                    <td>{{ item.goods_price }} руб</td>
+                    <td>{{ item.goods_price * item.goods_qnt }} руб</td>
+                </tr>
+
+                {% set count = count + item.goods_qnt %}
+                {% set cost = cost + item.goods_price * item.goods_qnt %}
+            {% endfor %}
+
+            </tbody>
+
+            <tfoot>
+            <tr>
+                <td colspan="2"><b>Итого</b></td>
+                <td><b>{{ count }} шт</b></td>
+                <td></td>
+                <td><b>{{ cost }} руб</b></td>
+            </tr>
+            </tfoot>
+        </table>
+
+    </div>
+
+{% endblock %}

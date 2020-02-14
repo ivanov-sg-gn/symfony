@@ -1,16 +1,50 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Детальная страница{% endblock %}
+{% block title %}Детальная строница товара | {{ goods.name }}{% endblock %}
+
+
+{% block menu_left %}
+    {{ include('section/menu_left.html.twig',{route: 'section', arSections: arSections}) }}
+{% endblock %}
+
 
 {% block body %}
-    <div class="example-wrapper">
-        <h1>Детальная страница</h1>
+    <div class="main goods-detail">
+        <div class="content_title">{{ goods.name }}</div>
 
-        <div class="main goods_detail">
-            <div>{{ goods.id }}</div>
-            <div>{{ goods.code }}</div>
-            <div>{{ goods.name }}</div>
-            <div>{{ goods.description }}</div>
+        <div class="goods-detail__main">
+            <div class="goods-detail__image">
+                <img src="{% if goods.img in arImages|keys %}{{ asset(upload_goods_path ~ arImages[goods.img]['path']) }}{% else %}https://www.prolo.ru/wa-data/public/shop/products/80/22/2280/images/2869/2869.970.jpg{% endif %}">
+            </div>
+
+
+            <div class="goods-detail__info">
+                <table>
+                    <caption>Информация о товаре</caption>
+                    <tr>
+                        <td>Идентификатор:</td>
+                        <td>{{ goods.id }}</td>
+                    </tr>
+                    <tr>
+                        <td>Код:</td>
+                        <td>{{ goods.code }}</td>
+                    </tr>
+                    <tr>
+                        <td>Название:</td>
+                        <td>{{ goods.name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Цена:</td>
+                        <td>{{ goods.price }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="goods-detail__description">
+            <div>Описание:</div>
+            <p>{{ goods.description }}</p>
         </div>
     </div>
 {% endblock %}

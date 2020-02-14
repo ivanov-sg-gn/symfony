@@ -1,7 +1,10 @@
-{% block menu_left %}
-    <ul>
-        {% for item in arSections %}
-            <li><a href="">item.name</a>
-        {% endfor %}
-    </ul>
-{% endblock %}
+{% if arSections is not empty %}
+    <div class="menu_left">
+        <div class="menu_left__title">Категории</div>
+        <ul>
+            {% for item in arSections %}
+                <li><a href="{{ path('goods_routing', {particles: item.code}) }}">{{ item.name }}</a>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}

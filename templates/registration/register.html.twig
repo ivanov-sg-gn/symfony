@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block body %}
+    <div class="main container">
+        <div class="content_title">Регистрация</div>
+
+            {{ form_start(registrationForm, {'attr': {'novalidate': 'novalidate'}}) }}
+                <div class="form_messages">{{ form_errors(registrationForm) }}</div>
+
+
+                <div class="form_line">
+                    {{  form_label(registrationForm.username) }}
+                    {{ form_errors(registrationForm.username) }}
+                    {{ form_widget(registrationForm.username, {'attr': {'class': 'test_username'}} ) }}
+                </div>
+
+                <div class="form_line">
+                    {{  form_label(registrationForm.password) }}
+                    {{ form_errors(registrationForm.password) }}
+                    {{ form_widget(registrationForm.password) }}
+                </div>
+
+                <div class="form_line">
+                    {{  form_label(registrationForm.agreeTerms) }}
+                    {{ form_errors(registrationForm.agreeTerms) }}
+                    {{ form_widget(registrationForm.agreeTerms) }}
+                </div>
+
+                <button class="btn">Зарегистрироваться</button>
+            {{ form_end(registrationForm) }}
+        </div>
+    </div>
+{% endblock %}

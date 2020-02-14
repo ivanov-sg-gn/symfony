@@ -3,27 +3,88 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
+
         {% block stylesheets %}
-            <link rel="stylesheet" href="/asset/css/style.css">
+            <link rel="stylesheet" href="{{ asset("/asset/css/main.css") }}">
         {% endblock %}
+        
+        <meta name="viewport" content="width=768">
+
+        <script src="{{ asset("/asset/scripts/lib/jquery-3.4.1.min.js") }}"></script>
+        <script src="{{ asset("/asset/scripts/scripts.js") }}"></script>
+
+        {% block additional_script %}{% endblock %}
     </head>
     <body>
         <div class="wrapper">
 
             <div class="header">
-                {% block header %}{% endblock %}
+                <div class="header__logo">
+                    {% block header__logo %}
+                        <i>М</i>агаз
+                    {% endblock %}
+                </div>
+
+                <div class="header__top-menu">
+                    {% block header__topmenu %}
+                        <ul>
+                            <li><a href="/">Главная</a></li>
+                            <li><a href="{{ path('goods_routing') }}">Каталог</a></li>
+                            <li><a href="/basket">Корзина</a></li>
+                        </ul>
+                    {% endblock %}
+                </div>
+
+                <div class="header__authorization-form">
+                    <ul>
+                        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                            <li><a href="/account">Профиль</a></li>
+                            <li><a href="/account/orders">Заказы</a></li>
+                            <li><a href="/logout">Выйти</a></li>
+                        {% else %}
+                            <li><a href="/login" class="js_authorization_form">Войти</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
             </div>
 
-            <div class="menu_left">
-                {% block menu_left %}{% endblock %}
-            </div>
 
             {% block breadcrumbs %}{% endblock %}
 
+            {% block menu_left %}{% endblock %}
+            
             {% block body %}
             {% endblock %}
 
             {% block javascripts %}{% endblock %}
         </div>
+
+
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') == false %}
+
+            {% block login_form %}
+                <div class="authorization_form">
+                    <form>
+                        <div class="authorization_form__error js_form_errors"></div>
+                        <div class="authorization_form__line">
+                            <label>Логин:</label>
+                            <input type="text" name="username">
+                        </div>
+                        <div class="authorization_form__line">
+                            <label>Пароль:</label>
+                            <input type="password" name="password">
+                        </div>
+
+                        <div class="authorization_form__controll">
+                            <input type="hidden" name="token" value="{{ csrf_token('AppJsonLogin') }}">
+
+                            <button type="submit" class="js_login">Войти</button>
+                            <button type="button" class="js_registration">Зарегистрироваться</button>
+                        </div>
+                    </form>
+                </div>
+            {% endblock %}
+
+        {% endif %}
     </body>
 </html>

@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block additional_script %}
+    <script src="{{ asset("/asset/scripts/basket.js") }}"></script>
+{% endblock %}
+
+
+{% block title %}Корзина{% endblock %}
+
+{% block body %}
+
+    <div class="main basket container">
+        <div class="content_title">Корзина</div>
+
+        <form action="{{ path('api', { particles: 'basket/update' }) }}" class="js_form_basket form_basket">
+            <table class="basket_table">
+                <thead>
+                    <tr>
+                        <td>№</td>
+                        <td>Название товара</td>
+                        <td>Количество</td>
+                        <td>Цена</td>
+                        <td>Итог</td>
+                        <td></td>
+                    </tr>
+                </thead>
+
+                <tbody>
+                </tbody>
+
+                <tfoot>
+                </tfoot>
+            </table>
+
+            <input type="hidden" name="token" value="{{ csrf_token('basket-rud') }}"/>
+        </form>
+
+        <form action="{{ path('api', { particles: 'basket/formation' }) }}" class="js_create_order form_create_order">
+            <div class="form_messages"></div>
+
+            <label for="first_name">Имя:</label>
+            <input type="text" name="first_name" id="first_name" placeholder="Обязательное">
+
+            <label for="last_name">Фамилия:</label>
+            <input type="text" name="last_name" id="last_name" placeholder="Обязательное">
+
+            <label for="second_name">Отчество:</label>
+            <input type="text" name="second_name" id="secontd_name">
+
+            <label for="email">Email:</label>
+            <input type="text" name="email" id="email" placeholder="Обязательное">
+
+            <label for="phone">Телефон:</label>
+            <input type="text" name="phone" id="phone" placeholder="Обязательное">
+
+            <label for="address">Адрес:</label>
+            <input type="text" name="address" id="address" placeholder="Обязательное">
+
+            <input type="hidden" name="token" value="{{ csrf_token('basket-formation') }}"/>
+            <button class="create_order" type="submit">Оформить заказ</button>
+        </form>
+    </div>
+
+{% endblock %}

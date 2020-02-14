@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="example-wrapper">
+        <h1>Hello {{ controller_name }}! ✅</h1>
+
+        {{ form(form) }}
+
+        <table>
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>name</th>
+                <th>description</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for goods in arGoods %}
+                <tr>
+                    <td>{{ goods.id }}</td>
+                    <td>{{ goods.name }}</td>
+                    <td>{{ goods.description }}</td>
+                    <td><a href="{{ path('remove_goods', {'goods': goods.id}) }}">Delete</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+
+    </div>
+{% endblock %}

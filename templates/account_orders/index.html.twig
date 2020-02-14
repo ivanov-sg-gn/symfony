@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Заказы{% endblock %}
+
+{% block body %}
+
+    <div class="main orders container">
+        <div class="content_title">Заказы</div>
+
+        <table class="orders_table">
+            <thead>
+            <tr>
+                <td>№</td>
+                <td>Имя</td>
+                <td>Фамилия</td>
+                <td>Отчество</td>
+                <td>Email</td>
+                <td>Телефон</td>
+                <td>Адрес</td>
+                <td>Стоимость</td>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for item in arOrder.arResult %}
+                <tr>
+                    <td><a href="{{ path('account_orders_detail', {id: item.id}) }}">{{ item.id }}</a></td>
+                    <td>{{ item.first_name }}</td>
+                    <td>{{ item.last_name }}</td>
+                    <td>{{ item.second_name }}</td>
+                    <td>{{ item.email }}</td>
+                    <td>{{ item.phone }}</td>
+                    <td>{{ item.address }}</td>
+                    <td>{{ arOrder.arInfo[item.id].total }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock %}
